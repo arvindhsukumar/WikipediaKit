@@ -61,6 +61,10 @@ public class Wikipedia {
     var secondSearchRequest: URLSessionDataTask?
     var mostReadArticleDetailsRequest: URLSessionDataTask?
     
+    public init(){
+        
+    }
+    
     static func buildURLRequest(language: WikipediaLanguage, parameters: [String:String]) -> URLRequest? {
         guard let baseUrl = self.baseURL(language: language) else { return nil }
         

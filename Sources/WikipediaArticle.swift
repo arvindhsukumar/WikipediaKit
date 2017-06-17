@@ -33,6 +33,7 @@ public class WikipediaArticle {
     
     public var language: WikipediaLanguage
    
+    public var rawTitle: String
     public var title: String
     public var displayTitle: String
     
@@ -47,6 +48,8 @@ public class WikipediaArticle {
 
     public var imageURL: URL?
     public var imageID: String?
+    
+    public var articleDescription: String!
     
     public lazy var url: URL? = {
         let escapedTitle = self.title.wikipediaURLEncodedString()
@@ -64,6 +67,7 @@ public class WikipediaArticle {
     
     public init(language: WikipediaLanguage, title: String, displayTitle: String) {
         self.language = language
+        self.rawTitle = title
         self.title = title.replacingOccurrences(of: "_", with: " ")
         
         
@@ -125,13 +129,13 @@ extension WikipediaArticle {
             }
         }
         
-        let rawDisplayTitle = (mobileview["displaytitle"] as? String) ?? title
+        let rawDisplayTitle = (mobileview["normalizedtitle"] as? String) ?? title
         
         self.init(language: language, title: title, displayTitle: rawDisplayTitle)
         
         self.rawText = text
         self.toc = toc
-        
+        self.articleDescription = mobileview["description"] as? String ?? ""
         
         if let imageProperties = mobileview["image"] as? JSONDictionary,
             let imageID = imageProperties["file"] as? String {
